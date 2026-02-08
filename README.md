@@ -1,5 +1,5 @@
 # machine-learning-projects-practice-
-its practice projects i am doing in mcahine learmimg
+its practice projects i am doing in machine learmimg
 1.EDA 
 2. clustering
 3.supervised 
