@@ -4,4 +4,4 @@ its practice projects and codes  i am doing in machine learning
 2. clustering
 3.supervised 
 4.model tuning and insights
-# here i have done only simple machine learning algorithms .
+# here i have done only simple machine learning and deep learning  algorithms .
