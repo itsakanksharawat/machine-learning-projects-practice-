@@ -1,5 +1,5 @@
-# machine-learning-projects-practice
-its practice projects and codes  i am doing in machine learning
+## machine-learning-projects-practice
+##its practice projects and codes  i am doing in machine learning
 
 1.EDA 
 2. clustering
