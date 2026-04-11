@@ -1,0 +1,227 @@
+Transformer Decoder Overview
+
+The transformer architecture is split into Encoder and Decoder blocks.
+The Decoder mirrors many encoder components (multi‑head attention, positional encoding, add‑&‑norm, feed‑forward layers) but adds two distinct attention mechanisms:
+
+
+
+Decoder Component
+
+Function
+
+Same as Encoder?
+
+Multi‑Head Self‑Attention
+
+
+Captures dependencies among already generated tokens
+✔️
+Positional Encoding
+
+Supplies order information
+
+✔️
+
+Add‑&‑Norm & Feed‑Forward
+
+
+
+Normalization and non‑linearity
+
+
+
+✔️
+
+
+
+
+
+Masked Self‑Attention
+
+
+
+Prevents a token from attending to future positions
+
+
+
+❌ (new)
+
+
+
+
+
+Cross‑Attention (↔)
+
+
+
+Attends to encoder output (context)
+
+
+
+❌ (new)
+
+
+
+Definition
+Masked Self‑Attention – a variant of self‑attention where each position can only attend to itself and preceding positions, enforced by a masking matrix.
+
+🎯 Masked Multi‑Head Attention
+
+
+
+
+
+Referred to as “mask‑self‑attention” in the lecture.
+
+
+
+It is a different flavor of multi‑head attention that incorporates a mask to enforce the auto‑regressive property during decoding.
+
+
+
+Without the mask, the decoder could cheat by looking at future tokens, breaking the sequential generation requirement.
+
+
+
+Definition
+Mask – a binary matrix applied to the attention scores that sets the scores of illegal (future) positions to (-\infty) before the softmax, forcing their attention weights to zero.
+
+How it works
+
+
+
+
+
+Query, Key, Value matrices are computed from the current decoder hidden states.
+
+
+
+The mask is added to the attention score matrix.
+
+
+
+Softmax yields attention weights that only consider current and previous tokens.
+
+
+
+The weighted sum produces the masked attention output, which is then processed by the usual add‑&‑norm and feed‑forward sub‑layers.
+
+📈 Auto‑Regressive vs. Non‑Auto‑Regressive Behavior
+
+
+
+
+
+
+
+Phase
+
+
+
+Model Behavior
+
+
+
+Reason
+
+
+
+
+
+Inference (prediction)
+
+
+
+Auto‑regressive – each generated token conditions on all previously generated tokens.
+
+
+
+Guarantees sequential dependence required for language generation.
+
+
+
+
+
+Training
+
+
+
+Non‑auto‑regressive (teacher forcing) – the decoder receives the ground‑truth previous token rather than its own prediction.
+
+
+
+Speeds up training and provides stable gradients.
+
+
+
+Definition
+Auto‑Regressive Model – a model that generates a sequence by repeatedly conditioning on the tokens it has already produced.
+
+
+
+Definition
+Teacher Forcing – during training, the correct previous token (from the dataset) is fed into the decoder instead of the model’s own previous prediction.
+
+Why the discrepancy?
+
+
+
+
+
+Training speed: Using the true previous token avoids the need to wait for the model’s own output at each step.
+
+
+
+Learning signal: Provides the correct context, allowing the loss to be computed directly against the target token.
+
+🧩 Cross‑Attention (Encoder‑Decoder Attention)
+
+
+
+
+
+After masked self‑attention, the decoder attends to the encoder’s output via cross‑attention.
+
+
+
+This layer allows the decoder to incorporate information from the source sequence (e.g., English sentence when translating to Hindi).
+
+🏃‍♂️ Computational Considerations
+
+
+
+
+
+Sequential nature of decoding makes training slower if we kept the auto‑regressive loop during training.
+
+
+
+With teacher forcing, each training example still processes the decoder’s full stack once per token, but the mask prevents future‑token leakage.
+
+
+
+For long sequences (e.g., 300‑token paragraphs), the decoder’s sub‑layers are executed 300 times per example, which can be a performance bottleneck.
+
+📚 Recap of Encoder Building Blocks (reused in Decoder)
+
+Self‑Attention – captures intra‑sentence relationships.
+
+Positional Encoding – adds order information to token embeddings.
+
+Add‑&‑Norm – residual connection followed by layer normalization.
+
+Feed‑Forward Network – two linear layers with a ReLU activation in between.
+
+These components are identical in both encoder and decoder, simplifying the overall architecture.
+
+🔍 Key Takeaways
+
+The decoder’s masked multi‑head attention is essential for preserving the auto‑regressive property during generation.
+
+
+
+Training employs teacher forcing (non‑auto‑regressive) to improve efficiency, while inference relies on true auto‑regressive behavior.
+
+
+
+Understanding the difference between masked self‑attention and cross‑
