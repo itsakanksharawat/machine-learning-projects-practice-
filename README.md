@@ -1,4 +1,4 @@
-## machine-learning-projects-practice
+### machine-learning-projects-practice
 ##its practice projects and codes  i am doing in machine learning
 
 1.EDA 
