@@ -4,7 +4,7 @@
 
 
 1.EDA 
-2. clustering
+2.clustering
 3.supervised 
 4.model tuning and insights
 # here i have done only simple machine learning and deep learning  algorithms .
